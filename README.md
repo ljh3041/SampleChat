@@ -21,3 +21,60 @@
 
 
 
+================================================================================================
+
+
+![image](https://github.com/user-attachments/assets/a085a3ed-d749-4366-a98c-15f88d972d17)
+
+
+미리 제공된 Samplechat 프로젝트에 숫자야구 전용 기능을 추가하는 방식으로 진행하였습니다.
+
+![image](https://github.com/user-attachments/assets/2f56e1c7-1470-4430-afec-7abac2594899)
+
+숫자야구게임 진행의 메인이 되는 기능은 위의 사진처럼 노드 하나를 끼워넣어 적용시켰습니다.
+
+NumberBaseballMode라는 C++클래스를 만들어 게임모드로서 작동되게끔 구현하였습니다.
+여기서는 타이머, 플레이어들의 승리 횟수, 도전 횟수, 스코어 업데이트 함수, 재시작 기능이 있으며, 
+MyGameLogic이라는 C++클래스를 따로 두어 랜덤난수생성, 답의 유효성 체크, 결과 계산 기능을 넣어두고 게임모드에서 호출할 수 있게끔 하였습니다.
+
+타이머도 추가하여 시간이 흐르면 강제로 턴을 넘기게끔 하였습니다.
+
+로그로만 결과를 찍기에는 아쉬운 느낌이 들어
+
+![image](https://github.com/user-attachments/assets/3f0ef7e9-036d-4bdb-b721-dfcf2ef91405)
+
+이런 느낌의 채팅창을 만들었습니다.
+
+스크롤 박스를 이용하였고, 
+
+![image](https://github.com/user-attachments/assets/ab821a95-c0f4-4cf7-9b92-61cbbbde50b3)
+
+이런 노드의 배치를 통해 기능을 구현해보았습니다.
+
+노드 중간의 Set Message Text는 
+
+![image](https://github.com/user-attachments/assets/4e26c867-5766-4113-84ff-5e069c21849c)
+
+이런식으로 구성이 된 직접 만든 함수인데, 스크롤 바에 직접 메시지를 기록하는 것이 안되어 ChatMessage라는 위젯 블루프린트를 만들어서, 텍스트 박스에 입력한 채팅을 기록하고 이를 스크롤 박스에 붙이는 식으로 구현하였습니다.
+
+점수판은 아래와 같이 생겼습니다.
+
+![image](https://github.com/user-attachments/assets/eb9bd4c8-405e-4153-8502-3179567a1bf8)
+
+점수판을 구성하는 노드는 아래와 같습니다.
+
+![image](https://github.com/user-attachments/assets/025342f3-6d9c-4ffb-aa24-551456c0d919)
+
+위에서 본 채팅창 시스템과 함께, 이 함수들은 컨트롤러의 GotBroadcast 뒤에 연결되었습니다.
+
+![image](https://github.com/user-attachments/assets/5e902c02-98d8-4606-b2e5-8b9dd88f308f)
+
+점수판을 위해 함수를 만들고, 게임모드에서 기록한 점수를 가져오려고 했으나, 서버는 클라이언트에서는 서버의 변수에 접근할 수 없는 문제가 발생하였습니다.
+
+따라서 점수를 가져오기 위해 NumberBaseballState라는 게임 스테이트를 만들어 게임모드에서 점수가 변화할 시에 게임 스테이트에도 전달하여 서버와 클라이언트 모두가 게임 스테이트에 접근하여 점수를 가져오도록 하였습니다.
+
+다만 이 부분에서 뭘 더 추가했어야 했는지는 모르겠지만
+
+![image](https://github.com/user-attachments/assets/2f8983d8-1b42-4e9f-ba7f-0ab4afeb2e9c)
+
+클라이언트에서는 맨 앞의 딜레이 노드가 없으면 점수가 바뀌어도 다음 입력때나 점수가 바뀌는 현상이 있어 부득이하게 0.2초 딜레이를 추가하였습니다.
